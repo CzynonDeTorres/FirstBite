@@ -2,18 +2,12 @@
 
 import sqlite3
 from sqlite3 import Error
-from database import food
+from database import food, user as DB_USER
+from pathlib import Path
 
-print(dir(food))
-food_data = {
-    "name": 'Hansel Chocolate Sandwich Cream-Filled Biscuits',
-    "serving_size": '31g per pack',
-    "calories": '160',
-    "fat": '7',
-    "cholesterol": '0',
-    "sodium": '85',
-    "carbs": '21',
-    "protein": '2',
-    "micronutrients": 'Calcium: 14mg\nIron: 1mg'
-}
-food.add_new_food(**food_data)
+try:
+    user_db = Path(__file__) / 'database' / 'user.db'
+    if not user_db.is_file():
+        DB_USER.create_users_meals()
+except Error as error:
+    print(f'{error}')
