@@ -10,9 +10,6 @@ FIRSTBITE_DB.row_factory = sqlite3.Row
 
 def create_users_meals():
     cur = FIRSTBITE_DB.cursor()
-    attachSQL = "ATTACH DATABASE ? AS food "
-    food_db = (f'{CURRENT_DIR}\\food.db',)
-    cur.execute(attachSQL, food_db)
     sql = (
         "CREATE TABLE users "
         "(id INT UNIQUE PRIMARY KEY NOT NULL,"
@@ -42,7 +39,7 @@ def create_users_meals():
             # 2 - has done GAMC to be female / has not done GAMC and is assigned female at birth
         "birthday DATE, "
         "goal_weight FLOAT"
-        ") "
+        "); "
 
         "CREATE TABLE meals "
         "(id INT UNIQUE PRIMARY KEY NOT NULL,"
@@ -52,12 +49,15 @@ def create_users_meals():
             # 3 - dinner
             # 4 - snack
         "name TEXT, "
-        "user_id INT FOREIGN KEY REFERENCES users(id), "
-        "food_id INT FOREIGN KEY REFERENCES food.food(id), "
+        "user_id INT, "
+        "food_id INT, "
+        # TODO: since referencing other databases doesn't work in sqlite
+        #       make a way to manually check food_id from other database
+        "FOREIGN KEY(user_id) REFERENCES users(id), "
         "date DATE"
         ")"
     )
     try:
-        cur.execute(sql)
+        cur.executescript(sql)
     except sqlite3.Error as error:
         print(error)
