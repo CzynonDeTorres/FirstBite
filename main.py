@@ -5,6 +5,7 @@ from sqlite3 import Error
 from database import food, user as DB_USER
 from pathlib import Path
 
+# checks if there is a user database in database folder
 try:
     user_db = Path(__file__) / 'database' / 'user.db'
     if not user_db.is_file():
