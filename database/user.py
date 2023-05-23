@@ -5,11 +5,12 @@ from pathlib import Path
 
 CURRENT_DIR = Path(__file__).parent
 DB_FILE = CURRENT_DIR / 'user.db'
-FIRSTBITE_DB = sqlite3.connect(DB_FILE)
-FIRSTBITE_DB.row_factory = sqlite3.Row
+USER_DB = sqlite3.connect(DB_FILE)
+USER_DB.row_factory = sqlite3.Row
 
+# creates user.db file and users and meals tables in it
 def create_users_meals():
-    cur = FIRSTBITE_DB.cursor()
+    cur = USER_DB.cursor()
     sql = (
         "CREATE TABLE users "
         "(id INT UNIQUE PRIMARY KEY NOT NULL,"
@@ -48,14 +49,32 @@ def create_users_meals():
             # 2 - lunch
             # 3 - dinner
             # 4 - snack
-        "name TEXT, "
         "user_id INT, "
         "food_id INT, "
+        "name TEXT, "
+        "date TEXT NOT NULL, "
         # TODO: since referencing other databases doesn't work in sqlite
         #       make a way to manually check food_id from other database
-        "FOREIGN KEY(user_id) REFERENCES users(id), "
-        "date DATE"
+        "FOREIGN KEY(user_id) REFERENCES users(id) "
         ")"
+    )
+    try:
+        cur.executescript(sql)
+    except sqlite3.Error as error:
+        print(error)
+
+# adds a new user to the database
+def add_new_user(**kwargs):
+    cur = USER_DB.cursor()
+    new_row = ''
+
+    for values in kwargs.values():
+        new_row += f'"{values}", '
+    new_row = new_row[:len(new_row)-2]
+    sql = (
+        "INSERT INTO users (name, height, weight, measurement_type, bmi, goals, activity_level, sex, choices, birthday, goal_weight) "
+        "VALUES "
+        f'({new_row});'
     )
     try:
         cur.executescript(sql)
