@@ -1,7 +1,9 @@
 # FirstBite
 
 description:
-
+- This program focuses on Food Intake/Diet monitoring that will help it's user to maintain
+physically fit and healthy. This will offer a variety of options to someone on a diet can intake
+and help them calculate the calories
 ## Setup
 
 - Install python 3.8 or higher, newest version is recommended
