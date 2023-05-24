@@ -38,8 +38,9 @@ def create_users_meals():
             # 0 - not queer
             # 1 - has done gender-affirming medication or care (shortening to GAMC for convenience) to be male / has not done GAMC and is assigned male at birth
             # 2 - has done GAMC to be female / has not done GAMC and is assigned female at birth
-        "birthday DATE, "
-        "goal_weight FLOAT"
+        "birthday TEXT, "
+        "goal_weight FLOAT, "
+        "daily_calorie_limit FLOAT"
         "); "
 
         "CREATE TABLE meals "
