@@ -327,7 +327,6 @@ class ActivityLevelWindow:
         except (ValueError, IndexError):
             return "Invalid choice. Please try again."
 
-
 # Finalize Goal Window
 # User needs to finalize their goal and choices to proceed
 
@@ -353,7 +352,6 @@ class FinalizeGoalWindow:
                 return True
             elif confirm.upper() == "N":
                 return False
-            
 
 # Press Key Prompt
 # To be able to proceed to the next window
@@ -399,16 +397,11 @@ def main():
 
     goals_window = GoalsWindow()
     goals_window.show()
-    
-
-    #selected_goal = goals_window.get_selected_goal()
 
     # Displaying the Emphasized Goals Window
 
     emphasized_options_window = EmphasizedOptionsWindow()
     emphasized_options_window.show()
-
-   # selected_options = emphasized_options_window.get_selected_options()
 
     # Displaying the Finalized
 
@@ -427,19 +420,12 @@ def main():
     gender_window = GenderSelectionWindow()
     gender_window.show()
 
-    # Displaying the Age Calculation Window
-
-    age_calculation_window = AgeCalculationWindow()
-    #age_calculation_window.show()
-
     # Displaying the Measurement Window
 
+    age_calculation_window = AgeCalculationWindow()
     goals_window = GoalsWindow()    
     measurement_window = MeasurementWindow(goals_window.selected_goal)
     measurement_window.show()
-    #measurement_window.get_goal_weight_required(goals_window.selected_goal)
-    #selected_goal = goals_window.selected_goal
-
 
     # Displaying the Calorie Calculator
 
