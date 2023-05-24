@@ -17,7 +17,7 @@ class CalorieCalculator:
         self.weight_in_kg = weight
         self.height_in_cm = height
         self.activity_factor = activity_factor
-        self.cal_msg = None
+        self.cal_msg = ''
 
     def calculate_daily_calories(self):
         if self.gender == "Male":
@@ -31,6 +31,7 @@ class CalorieCalculator:
     def show(self):
         daily_calories = self.calculate_daily_calories()
         self.cal_msg = "Your daily calorie requirement is {}." .format(daily_calories)
+        print(self.cal_msg)
 
 # Goals Window
 # Asking the user for their weight goals
@@ -82,18 +83,17 @@ class GoalsWindow:
 # User prompting selected features
 
 class EmphasizedOptionsWindow:
-    options = {
-        "1": "Track My Micronutrients & Macronutrients",
-        "2": "Modify My Meals",
-        "3": "Manage Stress & Mental State",
-        "4": "Workout & Exercise",
-        "5": "Gain Muscle"
-    }
-
     def __init__(self):
+        self.options = {
+            "1": "Track My Micronutrients & Macronutrients",
+            "2": "Modify My Meals",
+            "3": "Manage Stress & Mental State",
+            "4": "Workout & Exercise",
+            "5": "Gain Muscle"
+        }
         self.title = "Emphasized Options"
-        self.emphasized_options = []
-        self.selected_options = ""
+        self.emphasized_options = ""
+        self.selected_options = []
 
     def show(self):
         clear_console()
@@ -106,14 +106,18 @@ class EmphasizedOptionsWindow:
         self.emphasized_options = self.process_choices(choices)
 
     def process_choices(self, choices):
-        selected_options = []
-        for choice in choices.split(","):
-            if choice.strip() in self.options:
-                selected_options.append(self.options[choice.strip()])
-        return selected_options
+        for choice in choices.strip(", "):
+            if choice in self.options.keys():
+                self.selected_options.append(self.options[f'{choice}'])
+        return self.selected_options
     
     def get_selected_options(self):
-        return self.selected_options
+        options = self.selected_options
+        output = ""
+        for selected in options:
+            output += f'{selected}, '
+        output = output[:-2]
+        return output
 
 # Measurement Window
 # To prompt the height and weight of the
@@ -121,12 +125,12 @@ class EmphasizedOptionsWindow:
 class MeasurementWindow:
     def __init__(self, goals_window):
         self.title = "Measurement Window"
-        self.height = None
-        self.weight = None
-        self.height_in_cm = self.get_measurement("height")
-        self.weight_in_kg = self.get_measurement("weight")
-        self.goal_weight = self.get_goal_weight(goals_window.selected_goal)
-        self.age = AgeCalculationWindow().calculate_age()
+        self.height = 0
+        self.weight = 0
+        self.height_in_cm = 0
+        self.weight_in_kg = 0
+        self.goal_weight = 0
+        self.age = AgeCalculationWindow().show()
 
     def get_measurement(self, measurement_type):
         options = {
@@ -135,6 +139,10 @@ class MeasurementWindow:
                 "2": "Centimeters"
             },
             "weight": {
+                "1": "Pounds",
+                "2": "Kilograms"
+            },
+            "goal weight": {
                 "1": "Pounds",
                 "2": "Kilograms"
             }
@@ -146,41 +154,48 @@ class MeasurementWindow:
         if option == "1" and measurement_type == "height":
             feet = input("Enter the feet part of your height: ")
             inches = input("Enter the inches part of your height: ")
-            return self.convert_feet_inches_to_cm(feet, inches)
+            self.height_in_cm = self.convert_feet_inches_to_cm(feet, inches)
         elif option == "2" and measurement_type == "height":
             cm = float(input("Enter your height in centimeters: "))
-            return cm
+            self.height_in_cm = float(cm)
         elif option == "1" and measurement_type == "weight":
             pounds = float(input("Enter your weight in pounds: "))
-            return self.convert_pounds_to_kg(pounds)
+            self.weight_in_kg = self.convert_pounds_to_kg(pounds)
         elif option == "2" and measurement_type == "weight":
             kg = float(input("Enter your weight in kilograms: "))
-            return kg
+            self.weight_in_kg = float(kg)
+        elif option == "1" and measurement_type == "goal weight":
+            pounds = float(input("Enter your goal weight in pounds: "))
+            self.goal_weight = self.convert_pounds_to_kg(pounds)
+        elif option == "2" and measurement_type == "goal weight":
+            kg = float(input("Enter your goal weight in kilograms: "))
+            self.goal_weight = float(kg)
         else:
             print("Invalid option. Please try again.")
-            return self.get_measurement(measurement_type)
+            self.get_measurement(measurement_type)
 
     def get_goal_weight(self, selected_goal):
         if self.get_goal_weight_required(selected_goal):
             print("Please enter your goal weight.")
-            return self.get_measurement("weight")
+            self.get_measurement("goal weight")
         else:
             return None
 
     def get_goal_weight_required(self, selected_goal):
-        return selected_goal in ["Lose Weight", "Gain Weight"]
+        if "Maintain" not in selected_goal:
+            return True
 
     def convert_feet_inches_to_cm(self, feet, inches):
         feet = float(feet)
         inches = float(inches)
         # Conversion logic from feet & inches to centimeters
         height_in_cm = (feet * 30.48) + (inches * 2.54)
-        return height_in_cm
+        return float(height_in_cm)
 
     def convert_pounds_to_kg(self, pounds):
         # Conversion logic from pounds to kilograms
-        weight_in_kg = pounds * 0.45359237
-        return weight_in_kg
+        weight_in_kg = float(pounds) * 0.45359237
+        return float(weight_in_kg)
 
     def show(self):
         clear_console()
@@ -195,7 +210,7 @@ class MeasurementWindow:
 class AgeCalculationWindow:
     def __init__(self):
         self.title = "Age Calculation"
-        self.age = None
+        self.age = 0
 
     def show(self):
         clear_console()
@@ -205,7 +220,7 @@ class AgeCalculationWindow:
     def calculate_age(self):
         birthdate = self.get_valid_birthdate()
         today = datetime.date.today()
-        self.age = today.year - birthdate.year - (today < datetime.date(today.year, birthdate.month, birthdate.day))
+        self.age = float(today.year - birthdate.year - (today < datetime.date(today.year, birthdate.month, birthdate.day)))
 
     def get_valid_birthdate(self):
         while True:
@@ -363,7 +378,7 @@ class WelcomeScreen:
     def show(self):
         clear_console()
         print(self.title)
-        self.name = input("What would you like to be called?")
+        self.name = input("What would you like to be called? ")
         self.message = ("Hi {}! Thank you for letting us in your journey! ".format(self.name))
         print(self.message)
 
@@ -415,23 +430,22 @@ def main():
     # Displaying the Age Calculation Window
 
     age_calculation_window = AgeCalculationWindow()
-    age_calculation_window.show()
+    #age_calculation_window.show()
 
     # Displaying the Measurement Window
 
     goals_window = GoalsWindow()    
     measurement_window = MeasurementWindow(goals_window.selected_goal)
     measurement_window.show()
-    measurement_window.get_goal_weight_required(goals_window.selected_goal)
-    measurement_window = MeasurementWindow()
-    selected_goal = goals_window.selected_goal
+    #measurement_window.get_goal_weight_required(goals_window.selected_goal)
+    #selected_goal = goals_window.selected_goal
 
 
     # Displaying the Calorie Calculator
 
     calorie_counter = CalorieCalculator(
-        age=age_calculation_window.age,
         gender=gender_window.selected_gender,
+        age=age_calculation_window.age,
         weight=measurement_window.weight_in_kg,
         height=measurement_window.height_in_cm,
         activity_factor=activity_level_window.activity_level
