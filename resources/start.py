@@ -43,7 +43,7 @@ class GoalsWindow:
             "2": "Maintain Weight",
             "3": "Gain Weight"
         }
-        self.selected_goal = None
+        self.selected_goal = ""
         self.change_goal = False  # Flag to indicate if goal needs to be changed
 
     def show(self):
@@ -66,7 +66,7 @@ class GoalsWindow:
             print(f"{key}. {value}")
 
     def process_choice(self, choice):
-        if choice in self.goal_options:
+        if choice in self.goal_options.keys():
             return self.goal_options[choice]
         else:
             print("Invalid choice. Please try again.")
@@ -93,7 +93,7 @@ class EmphasizedOptionsWindow:
     def __init__(self):
         self.title = "Emphasized Options"
         self.emphasized_options = []
-        self.selected_options = None
+        self.selected_options = ""
 
     def show(self):
         clear_console()
@@ -398,8 +398,8 @@ def main():
     # Displaying the Finalized
 
     finalize_window = FinalizeGoalWindow(
-        selected_goal = goals_window.get_selected_goal,
-        selected_options= emphasized_options_window.get_selected_options)
+        selected_goal = goals_window.get_selected_goal(),
+        selected_options= emphasized_options_window.get_selected_options())
     finalize_window.show()
 
     # Displaying the Activity Level Window
@@ -420,9 +420,9 @@ def main():
     # Displaying the Measurement Window
 
     goals_window = GoalsWindow()    
-    measurement_window = MeasurementWindow(goals_window.selected_goal())
+    measurement_window = MeasurementWindow(goals_window.selected_goal)
     measurement_window.show()
-    measurement_window.get_goal_weight_required(goals_window.selected_goal())
+    measurement_window.get_goal_weight_required(goals_window.selected_goal)
     measurement_window = MeasurementWindow()
     selected_goal = goals_window.selected_goal
 
