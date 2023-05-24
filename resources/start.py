@@ -420,9 +420,9 @@ def main():
     # Displaying the Measurement Window
 
     goals_window = GoalsWindow()    
-    measurement_window = MeasurementWindow(goals_window.selected_goal)
+    measurement_window = MeasurementWindow(goals_window.selected_goal())
     measurement_window.show()
-    measurement_window.get_goal_weight_required(goals_window.selected_goal)
+    measurement_window.get_goal_weight_required(goals_window.selected_goal())
     measurement_window = MeasurementWindow()
     selected_goal = goals_window.selected_goal
 
