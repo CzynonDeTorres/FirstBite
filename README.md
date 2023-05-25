@@ -1,9 +1,12 @@
-# FirstBite
+![psd_logotext](https://github.com/CzynonDeTorres/FirstBite/assets/131897056/d15f6f26-2fd1-450e-89f0-fd3f8711c7d1)
+
+:fork_and_knife: # FirstBite 
 
 # Description and Purpose
 - This program focuses on Food Intake/Diet monitoring that will help it's user to maintain
 physically fit and healthy. This will offer a variety of options to someone on a diet can intake
 and help them calculate the calories
+
 ## Setup
 
 - Install python 3.8 or higher, newest version is recommended
