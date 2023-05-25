@@ -1,3 +1,6 @@
+from database import food, meal, user
+import datetime
+
 class fmg:
     def mood(self):
         um = input("Let us know how you feel, user\n<happy>\n<sad>\n<neutral>\n<angry>\n\n")
@@ -28,33 +31,35 @@ class fmg:
 
 
     def food_choice(self):
+        def __init__(self):
+            self.meal_select = 0
 
         def view_meal():
             print("//// meals from database")
 
         def input_meal():
-            choice = input("Input your meal:\n1.<type in your meal>\n2.<scan a barcode>")
-            if choice == "1":
-                today_meal = input("Enter your meal: ")
-                #  search from database
-            elif choice == "2":
-                today_meal = input("Enter a barcode: ")
-                # search from database
-            else:
-                input_meal()
+            food_check = input("Search for food in our database: ")
+            food_class = food.Food()
+            food_class.search_food(food_check)
 
-        def add_meal():
+            choice = input("Input your meal: ")
+            food_class.set_food(choice)
+            meal_obj = meal.Meal()
+            user_obj = user.User()
+            meal_obj.add_meal(self.meal_select, user_obj.id, choice, food_class.name, datetime.date.today())
+
+        def add_meal(self):
             print("Please select your meal")
-            meal_select = input("1.<Breakfast>\n2.<Lunch>\n3.<Dinner>\n4.<Snack>\n5.<I haven't eaten yet>\n\n")
-            if meal_select == "1":
+            self.meal_select = input("1.<Breakfast>\n2.<Lunch>\n3.<Dinner>\n4.<Snack>\n5.<I haven't eaten yet>\n\n")
+            if self.meal_select == "1":
                 input_meal()
-            elif meal_select == "2":
+            elif self.meal_select == "2":
                 input_meal()
-            elif meal_select == "3":
+            elif self.meal_select == "3":
                 input_meal()
-            elif meal_select == "4":
+            elif self.meal_select == "4":
                 input_meal()
-            elif meal_select == "5":
+            elif self.meal_select == "5":
                 self.food_choice()
             else:
                 add_meal()
