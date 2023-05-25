@@ -43,7 +43,7 @@ class fmg:
             else:
                 input_meal()
 
-        def add_meal(self):
+        def add_meal():
             print("Please select your meal")
             meal_select = input("1.<Breakfast>\n2.<Lunch>\n3.<Dinner>\n4.<Snack>\n5.<I haven't eaten yet>\n\n")
             if meal_select == "1":
