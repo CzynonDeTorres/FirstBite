@@ -2,6 +2,7 @@ import os
 import datetime
 
 from database import user
+from resources import fmg as main_choices
 
 # Clear Console 
 # Clearing the console
@@ -398,8 +399,10 @@ class WelcomeScreen:
         self.password = ""
 
     def login(self):
-        self.name = input("What is your name? ")
-        self.password = input("What is your password? ")
+        name = input("What is your name? ")
+        password = input("What is your password? ")
+        user_py = user.User()
+        user_py.login(name, password)
 
     def show(self):
         clear_console()
@@ -407,11 +410,65 @@ class WelcomeScreen:
         choice = input("Do you have a previous account in the database (Y/N)? ")
         if choice.lower() == "y":
             self.login()
+            return
 
         self.name = input("What would you like to be called? ")
         self.message = ("Hi {}! Thank you for letting us in your journey! ".format(self.name))
         print(self.message)
         self.password = input("Please enter a password: ")
+        
+        # Displaying the Press Key Prompt (to proceed to the next portion)
+
+        press_key_prompt = PressKeyPrompt("Press any key to continue...")
+        press_key_prompt.show()
+
+        # Displaying the Goals Window and select goal
+
+        goals_window = GoalsWindow()
+        goals_window.show()
+
+        # Displaying the Emphasized Goals Window
+
+        emphasized_options_window = EmphasizedOptionsWindow()
+        emphasized_options_window.show()
+
+        # Displaying the Finalized
+
+        finalize_window = FinalizeGoalWindow(
+            selected_goal = goals_window.get_selected_goal(),
+            selected_options= emphasized_options_window.get_selected_options())
+        finalize_window.show()
+
+        # Displaying the Activity Level Window
+
+        activity_level_window = ActivityLevelWindow()
+        activity_level_window.show()
+
+        # Displaying the Gender Selection Window
+
+        gender_window = GenderSelectionWindow()
+        gender_window.show()
+
+        # Displaying the Measurement Window
+
+        age_calculation_window = AgeCalculationWindow()
+        goals_window = GoalsWindow()    
+        measurement_window = MeasurementWindow(goals_window.selected_goal)
+        measurement_window.show()
+
+        # Displaying the Calorie Calculator
+
+        calorie_counter = CalorieCalculator(
+            gender=gender_window.selected_gender,
+            age=age_calculation_window.age,
+            weight=measurement_window.weight_in_kg,
+            height=measurement_window.height_in_cm,
+            activity_factor=activity_level_window.activity_level
+        )
+        calorie_counter.show()
+
+        new_user = user.User()
+        new_user.add_new_user(self.name, self.password, measurement_window.height_in_cm, measurement_window.weight_in_kg, measurement_window.option, measurement_window.bmi, goals_window.goal_choice, activity_level_window.choice, gender_window.first_q, gender_window.second_q, age_calculation_window.birthday, measurement_window.goal_weight, calorie_counter.daily_calories)
 
 
 def main():
@@ -421,55 +478,5 @@ def main():
     welcome = WelcomeScreen()
     welcome.show()
 
-    # Displaying the Press Key Prompt (to proceed to the next portion)
-
-    press_key_prompt = PressKeyPrompt("Press any key to continue...")
-    press_key_prompt.show()
-
-    # Displaying the Goals Window and select goal
-
-    goals_window = GoalsWindow()
-    goals_window.show()
-
-    # Displaying the Emphasized Goals Window
-
-    emphasized_options_window = EmphasizedOptionsWindow()
-    emphasized_options_window.show()
-
-    # Displaying the Finalized
-
-    finalize_window = FinalizeGoalWindow(
-        selected_goal = goals_window.get_selected_goal(),
-        selected_options= emphasized_options_window.get_selected_options())
-    finalize_window.show()
-
-    # Displaying the Activity Level Window
-
-    activity_level_window = ActivityLevelWindow()
-    activity_level_window.show()
-
-    # Displaying the Gender Selection Window
-
-    gender_window = GenderSelectionWindow()
-    gender_window.show()
-
-    # Displaying the Measurement Window
-
-    age_calculation_window = AgeCalculationWindow()
-    goals_window = GoalsWindow()    
-    measurement_window = MeasurementWindow(goals_window.selected_goal)
-    measurement_window.show()
-
-    # Displaying the Calorie Calculator
-
-    calorie_counter = CalorieCalculator(
-        gender=gender_window.selected_gender,
-        age=age_calculation_window.age,
-        weight=measurement_window.weight_in_kg,
-        height=measurement_window.height_in_cm,
-        activity_factor=activity_level_window.activity_level
-    )
-    calorie_counter.show()
-
-    new_user = user.User()
-    new_user.add_new_user(welcome.name, welcome.password, measurement_window.height_in_cm, measurement_window.weight_in_kg, measurement_window.option, measurement_window.bmi, goals_window.goal_choice, activity_level_window.choice, gender_window.first_q, gender_window.second_q, age_calculation_window.birthday, measurement_window.goal_weight, calorie_counter.daily_calories)
+    main = main_choices.fmg()
+    main.fmg()
