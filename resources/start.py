@@ -85,7 +85,7 @@ class GoalsWindow:
 class EmphasizedOptionsWindow:
     def __init__(self):
         self.options = {
-            "1": "Track My Micronutrients & Macronutrients",
+            "1": "Track My Macronutrients",
             "2": "Modify My Meals",
             "3": "Manage Stress & Mental State",
             "4": "Workout & Exercise",
@@ -438,5 +438,3 @@ def main():
     )
     calorie_counter.show()
 
-if __name__ == "__main__":
-    main()
