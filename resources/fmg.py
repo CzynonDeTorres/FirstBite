@@ -2,34 +2,31 @@ from database import food, meal, user
 import datetime
 
 class Mood:
-    def mood(self):
-        
-
-        def opt():
-            choice = input("<yes>\n<no>\n\n")
-            if choice.lower() == "yes":
-                mood_notes = input("Please input your emotion notes\n\n")
-            elif choice.lower() == "no":
-                main()
-            else:
-                self.opt()
-
-        def show(self):
-            um = input("Let us know how you feel, user\n<happy>\n<sad>\n<neutral>\n<angry>\n\n")
-            if um.lower() == "happy":
-                user_mood = "happy"
-            elif um.lower() == "sad":
-                user_mood = "sad"
-            elif um.lower() == "neutral":
-                user_mood = "neutral"
-            elif um.lower() == "angry":
-                user_mood = "angry"
-            else:
-                self.mood()
-
-            print("Tracking your emotions can help you understand your eating habits better.")
-            print("Would you like to elaborate how you feel? (This choice is optional. All information is confidential.)")
+    def opt(self):
+        choice = input("<yes>\n<no>\n\n")
+        if choice.lower() == "yes":
+            mood_notes = input("Please input your emotion notes\n\n")
+        elif choice.lower() == "no":
+            main()
+        else:
             self.opt()
+
+    def show(self):
+        um = input("Let us know how you feel, user\n<happy>\n<sad>\n<neutral>\n<angry>\n\n")
+        if um.lower() == "happy":
+            user_mood = "happy"
+        elif um.lower() == "sad":
+            user_mood = "sad"
+        elif um.lower() == "neutral":
+            user_mood = "neutral"
+        elif um.lower() == "angry":
+            user_mood = "angry"
+        else:
+            self.mood()
+
+        print("Tracking your emotions can help you understand your eating habits better.")
+        print("Would you like to elaborate how you feel? (This choice is optional. All information is confidential.)")
+        self.opt()
 
 
 
