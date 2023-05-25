@@ -2,11 +2,11 @@
 
 import sqlite3
 from pathlib import Path
+from tabulate import tabulate
 
 CURRENT_DIR = Path(__file__).parent
 DB_FILE = CURRENT_DIR / 'food.db'
 FOOD_DB = sqlite3.connect(DB_FILE)
-FOOD_DB.row_factory = sqlite3.Row
 
 class Food:
     def __init__(self):
@@ -34,10 +34,34 @@ class Food:
         )
         cur.executescript(sql)
 
-    def search_food():
+    def search_food(self, food):
         sql = (
             "SELECT "
-            "name, serving_size, calories "
-            "FROM food"
-            "WHERE name LIKE '%?%'"
+            "id, name, serving_size, calories "
+            "FROM food "
+            f'WHERE name LIKE "%{food}%"'
         )
+        cur = FOOD_DB.cursor()
+        cur.execute(sql)
+        list_of_food = cur.fetchall()
+        print(list_of_food)
+        print(tabulate(list_of_food, headers=["ID", "Name", "Serving Size", "Calories"]))
+
+    def set_food(self, id):
+        sql = (
+            "SELECT * "
+            "FROM food "
+            f'WHERE id CONTAINS "{id}"'
+        )
+        cur = FOOD_DB.cursor()
+        cur.execute(sql)
+        food_details = cur.fetchall()
+        food_details = food_details[0]
+        self.name = food_details[0]
+        self.serving_size = food_details[1]
+        self.calories = food_details[2]
+        self.fat = food_details[3]
+        self.cholesterol = food_details[4]
+        self.sodium = food_details[5]
+        self.carbs = food_details[6]
+        self.protein = food_details[7]
