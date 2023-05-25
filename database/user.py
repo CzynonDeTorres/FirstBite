@@ -6,7 +6,6 @@ from pathlib import Path
 CURRENT_DIR = Path(__file__).parent
 DB_FILE = CURRENT_DIR / 'user.db'
 USER_DB = sqlite3.connect(DB_FILE)
-USER_DB.row_factory = sqlite3.Row
 
 class User:
     def __init__(self):
@@ -100,7 +99,7 @@ class User:
         except sqlite3.Error as error:
             print(error)
 
-    def login(name, password):
+    def login(self, name, password):
         cur = USER_DB.cursor()
         sql = (
             "SELECT * "
@@ -109,4 +108,20 @@ class User:
             f'name = "{name}" AND '
             f'password = "{password}"'
         )
-        details = cur.execute(sql)
+        cur.execute(sql)
+        details = cur.fetchall()
+        details = details[0]
+        self.id = details[0]
+        self.name = details[1]
+        self.password = details[2]
+        self.height = details[3]
+        self.weight = details[4]
+        self.measurement_type = details[5]
+        self.bmi = details[6]
+        self.goals = details[7]
+        self.activity_level = details[8]
+        self.sex = details[9]
+        self.choices = details[10]
+        self.birthday = details[11]
+        self.goal_weight = details[12]
+        self.daily_calorie_limit = details[13]
