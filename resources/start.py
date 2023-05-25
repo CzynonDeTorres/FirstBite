@@ -1,6 +1,8 @@
 import os
 import datetime
 
+from database import user
+
 # Clear Console 
 # Clearing the console
 
@@ -18,6 +20,7 @@ class CalorieCalculator:
         self.height_in_cm = height
         self.activity_factor = activity_factor
         self.cal_msg = ''
+        self.daily_calories = 0
 
     def calculate_daily_calories(self):
         if self.gender == "Male":
@@ -29,8 +32,8 @@ class CalorieCalculator:
         return daily_calories
     
     def show(self):
-        daily_calories = self.calculate_daily_calories()
-        self.cal_msg = "Your daily calorie requirement is {}." .format(daily_calories)
+        self.daily_calories = self.calculate_daily_calories()
+        self.cal_msg = "Your daily calorie requirement is {}." .format(self.daily_calories)
         print(self.cal_msg)
 
 # Goals Window
@@ -44,6 +47,7 @@ class GoalsWindow:
             "2": "Maintain Weight",
             "3": "Gain Weight"
         }
+        self.goal_choice = 0
         self.selected_goal = ""
         self.change_goal = False  # Flag to indicate if goal needs to be changed
 
@@ -68,6 +72,7 @@ class GoalsWindow:
 
     def process_choice(self, choice):
         if choice in self.goal_options.keys():
+            self.goal_choice = choice
             return self.goal_options[choice]
         else:
             print("Invalid choice. Please try again.")
@@ -131,6 +136,8 @@ class MeasurementWindow:
         self.weight_in_kg = 0
         self.goal_weight = 0
         self.age = AgeCalculationWindow().show()
+        self.option = 0
+        self.bmi = 0
 
     def get_measurement(self, measurement_type):
         options = {
@@ -150,6 +157,7 @@ class MeasurementWindow:
         clear_console()
         print(f"What is your {measurement_type}?")
         option = input(f"Enter 1 for {options[measurement_type]['1']}, or 2 for {options[measurement_type]['2']}: ")
+        self.option = option
 
         if option == "1" and measurement_type == "height":
             feet = input("Enter the feet part of your height: ")
@@ -166,10 +174,10 @@ class MeasurementWindow:
             self.weight_in_kg = float(kg)
         elif option == "1" and measurement_type == "goal weight":
             pounds = float(input("Enter your goal weight in pounds: "))
-            self.goal_weight = self.convert_pounds_to_kg(pounds)
+            return self.convert_pounds_to_kg(pounds)
         elif option == "2" and measurement_type == "goal weight":
             kg = float(input("Enter your goal weight in kilograms: "))
-            self.goal_weight = float(kg)
+            return float(kg)
         else:
             print("Invalid option. Please try again.")
             self.get_measurement(measurement_type)
@@ -177,7 +185,7 @@ class MeasurementWindow:
     def get_goal_weight(self, selected_goal):
         if self.get_goal_weight_required(selected_goal):
             print("Please enter your goal weight.")
-            self.get_measurement("goal weight")
+            return self.get_measurement("goal weight")
         else:
             return None
 
@@ -196,6 +204,10 @@ class MeasurementWindow:
         # Conversion logic from pounds to kilograms
         weight_in_kg = float(pounds) * 0.45359237
         return float(weight_in_kg)
+    
+    def get_bmi(self, height, weight):
+        bmi = float(weight) / ((float(height)/100) * (float(height)/100))
+        return float(bmi)
 
     def show(self):
         clear_console()
@@ -204,12 +216,14 @@ class MeasurementWindow:
         self.height = self.get_measurement("height")
         self.weight = self.get_measurement("weight")
         self.goal_weight = self.get_goal_weight(goals_window.selected_goal)
+        self.bmi = self.get_bmi(self.height_in_cm, self.weight_in_kg)
 
 # Age Calculation Window 
 
 class AgeCalculationWindow:
     def __init__(self):
         self.title = "Age Calculation"
+        self.birthday = ""
         self.age = 0
 
     def show(self):
@@ -219,6 +233,7 @@ class AgeCalculationWindow:
 
     def calculate_age(self):
         birthdate = self.get_valid_birthdate()
+        self.birthday = birthdate.strftime("%Y-%m-%d")
         today = datetime.date.today()
         self.age = float(today.year - birthdate.year - (today < datetime.date(today.year, birthdate.month, birthdate.day)))
 
@@ -239,6 +254,8 @@ class GenderSelectionWindow:
             "2": "Cisgender Female",
             "3": "Queer"
         }
+        self.first_q = 0
+        self.second_q = 0
         self.selected_gender = None
 
     def show(self):
@@ -249,11 +266,13 @@ class GenderSelectionWindow:
         self.selected_gender = self.process_choice(choice)
 
         if self.selected_gender == "Queer":
+            self.first_q = 3
             self.show_queer_options()
         elif self.selected_gender in ["Cisgender Male", "Cisgender Female"]:
             return  # Proceed to the next window
         else:
             print("Invalid choice. Please try again.")
+            self.first_q = 0
             self.show()
 
     def display_options(self):
@@ -269,6 +288,7 @@ class GenderSelectionWindow:
                 print("Invalid choice. Please try again.")
 
     def process_choice(self, choice):
+        self.first_q = choice
         return self.gender_options[choice]
 
     def show_queer_options(self):
@@ -281,6 +301,7 @@ class GenderSelectionWindow:
         elif meds_choice == "N":
             gender_choices = self.gender_options.copy()
             del gender_choices["3"]  # Remove "Queer" option
+            print("Select your sex assigned at birth.")
         else:
             print("Invalid choice. Please try again.")
             self.show_queer_options()
@@ -288,11 +309,11 @@ class GenderSelectionWindow:
         self.show_gender_options(gender_choices)
 
     def show_gender_options(self, choices):
-        print("Select your sex assigned at birth.")
         for key, value in choices.items():
             print(f"{key}. {value}")
-
-        self.selected_gender = choices[input("Enter the number corresponding to your choice: ")]
+        choice = input("Enter the number corresponding to your choice: ")
+        self.second_q = choice
+        self.selected_gender = choices[choice]
 
 # Activity Level Window
 # Determining the user's activeness level
@@ -308,6 +329,7 @@ class ActivityLevelWindow:
     def __init__(self):
         self.title = "Baseline Activity Level"
         self.activity_level = None
+        self.choice = 0
 
     def show(self):
         clear_console()
@@ -323,6 +345,7 @@ class ActivityLevelWindow:
     def process_choice(self, choice):
         try:
             choice_index = int(choice) - 1
+            self.choice = choice
             return self.activity_levels[choice_index]["factor"]
         except (ValueError, IndexError):
             return "Invalid choice. Please try again."
@@ -372,13 +395,23 @@ class WelcomeScreen:
         self.title = "Welcome to First Bite!"
         self.name = None
         self.message = None
+        self.password = ""
+
+    def login(self):
+        self.name = input("What is your name? ")
+        self.password = input("What is your password? ")
 
     def show(self):
         clear_console()
         print(self.title)
+        choice = input("Do you have a previous account in the database (Y/N)? ")
+        if choice.lower() == "y":
+            self.login()
+
         self.name = input("What would you like to be called? ")
         self.message = ("Hi {}! Thank you for letting us in your journey! ".format(self.name))
         print(self.message)
+        self.password = input("Please enter a password: ")
 
 
 def main():
@@ -438,3 +471,5 @@ def main():
     )
     calorie_counter.show()
 
+    new_user = user.User()
+    new_user.add_new_user(welcome.name, welcome.password, measurement_window.height_in_cm, measurement_window.weight_in_kg, measurement_window.option, measurement_window.bmi, goals_window.goal_choice, activity_level_window.choice, gender_window.first_q, gender_window.second_q, age_calculation_window.birthday, measurement_window.goal_weight, calorie_counter.daily_calories)
