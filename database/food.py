@@ -8,25 +8,36 @@ DB_FILE = CURRENT_DIR / 'food.db'
 FOOD_DB = sqlite3.connect(DB_FILE)
 FOOD_DB.row_factory = sqlite3.Row
 
-def add_new_food(**kwargs):
-    cur = FOOD_DB.cursor()
-    
-    new_row = ''
-    for values in kwargs.values():
-        new_row += f'"{values}", '
-    new_row = new_row[:len(new_row)-2]
+class Food:
+    def __init__(self):
+        self.name = ""
+        self.serving_size = ""
+        self.calories = 0
+        self.fat = 0
+        self.cholesterol = 0
+        self.sodium = 0
+        self.carbs = 0
+        self.protein = 0
+        
+    def add_new_food(**kwargs):
+        cur = FOOD_DB.cursor()
+        
+        new_row = ''
+        for values in kwargs.values():
+            new_row += f'"{values}", '
+        new_row = new_row[:len(new_row)-2]
 
-    sql = (
-        "INSERT INTO food (name, serving_size, calories, fat, cholesterol, sodium, carbs, protein, micronutrients)"
-        "VALUES "
-        f'({new_row});'
-    )
-    cur.executescript(sql)
+        sql = (
+            "INSERT INTO food (name, serving_size, calories, fat, cholesterol, sodium, carbs, protein)"
+            "VALUES "
+            f'({new_row});'
+        )
+        cur.executescript(sql)
 
-def search_food():
-    sql = (
-        "SELECT "
-        "name, serving_size, calories "
-        "FROM food"
-        "WHERE name LIKE '%?%'"
-    )
+    def search_food():
+        sql = (
+            "SELECT "
+            "name, serving_size, calories "
+            "FROM food"
+            "WHERE name LIKE '%?%'"
+        )
