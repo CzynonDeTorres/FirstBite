@@ -1,19 +1,20 @@
-![psd_logotext](https://github.com/CzynonDeTorres/FirstBite/assets/131897056/d15f6f26-2fd1-450e-89f0-fd3f8711c7d1)
 
-:fork_and_knife: # FirstBite 
+![psd_logotext_cropped](https://github.com/CzynonDeTorres/FirstBite/assets/131897056/27cb3a31-7ab0-4420-a48d-12b51ff2a017)
 
-# Description and Purpose
-- This program focuses on Food Intake/Diet monitoring that will help it's user to maintain
-physically fit and healthy. This will offer a variety of options to someone on a diet can intake
-and help them calculate the calories
+# 🍽️ FirstBite 
 
-## Setup
+# 🏆 Description and Purpose
+- This program focuses on Food Intake/Diet monitoring that will help it's user to maintain one's
+physically fitness and health. This will offer a variety of options to someone on a diet can intake
+and help them calculate the calories. 
+
+## 💻 Setup
 
 - Install python 3.8 or higher, newest version is recommended
 - Install the third party libraries mentioned in `requirements.txt`.
 - Run `main.py`.
 
-## Significance 
+## 🌏✔️ Significance 
 
 - The following are SDGs (Sustainable Development Goals) aligned with FirstBite. 
 
@@ -25,7 +26,7 @@ and help them calculate the calories
 
 4. Gender Equality (SDG 5): If the program addresses specific nutritional needs or challenges faced by women, it can contribute to promoting gender equality in access to proper nutrition and health.
 
-## Authors
+## 🖱️ Authors
 - <a href="https://github.com/CzynonDeTorres">Czynon John P. De Torres</a>
 - <a href="https://github.com/mafranzramos">Ma. Francezca L. Ramos</a>
 - <a href="https://github.com/Aeruim26">Rosechel U. San Lorenzo</a>
