@@ -90,7 +90,6 @@ class User:
         for values in args:
             new_row += f'"{values}", '
         new_row = new_row[:len(new_row)-2]
-        print(new_row)
         sql = (
             "INSERT INTO users (name, password, height, weight, measurement_type, bmi, goals, activity_level, sex, choices, birthday, goal_weight, daily_calorie_limit) "
             "VALUES "
