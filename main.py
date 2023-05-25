@@ -11,7 +11,7 @@ from resources import start
 try:
     user_db = Path(__file__) / 'database' / 'user.db'
     if not user_db.is_file():
-        DB_USER.create_users_meals()
+        DB_USER.User.create_users_meals()
 except Error as error:
     print(f'{error}')
 
