@@ -27,12 +27,11 @@ if __name__ == '__main__':
         "name TEXT NOT NULL, "
         "serving_size TEXT NOT NULL, "
         "calories INT NOT NULL, "
-        "fat INT NOT NULL, "
-        "cholesterol INT NOT NULL, "
-        "sodium INT NOT NULL, "
-        "carbs INT NOT NULL, "
-        "protein INT NOT NULL, "
-        "micronutrients TEXT "
+        "fat FLOAT NOT NULL, "
+        "cholesterol FLOAT NOT NULL, "
+        "sodium FLOAT NOT NULL, "
+        "carbs FLOAT NOT NULL, "
+        "protein FLOAT NOT NULL"
         ")"
     )
     cur.execute(sql)
