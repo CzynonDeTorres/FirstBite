@@ -4,6 +4,7 @@ resources/__pycache__/
 
 # random files
 shh.txt
+database/update_food_database.py
 
 # personal databases
 user.db
