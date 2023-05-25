@@ -41,6 +41,16 @@ Starting with the **start.py**, this file includes several classes such as.
 
 10. 🔢✔️ Display Daily Calorie Requirement: The program displays the calculated daily calorie requirement to the user.
 
+as for the **fmg.py**, it includes the following functions
+
+1. 😃😢😠 mood() function: This function prompts the user to input their current mood, such as "happy," "sad," "neutral," or "angry." It then asks the user if they would like to elaborate on their emotions. If the user chooses to provide more details, they can input their emotion notes. Otherwise, the function calls the fmg() function.
+
+2. 🍜🍎 food_choice() function: This function presents the user with two options: "Add Meal" or "View Meals." If the user selects "Add Meal," they are prompted to select the type of meal they want to add (breakfast, lunch, dinner, snack, or indicate that they haven't eaten yet). Depending on their selection, the user is then asked to input the meal manually or scan a barcode. The program can search a database for the specified meal. If the user selects "View Meals," the program displays meals from a database.
+
+3. 🏋️👯 exercise() function: This function displays an exercise routine obtained from a database. It then asks the user if they would like to edit their exercise routine. If the user chooses to edit, they can input the modified exercise routine. If not, the fmg() function is called.
+
+4. 🍜😃🏋️ fmg() function: This function serves as the main menu for the program. It prompts the user to select a function: "Food," "Mood," or "Groove" (exercise). Depending on the user's selection, it calls the corresponding function (food_choice(), mood(), or exercise()). If the user enters an invalid input, the fmg() function is called again.
+
 ## 🌏✔️ Significance 
 
 - The following are SDGs (Sustainable Development Goals) aligned with FirstBite. 
